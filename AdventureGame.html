@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- Joseph Gust  9/12/2016  Project 1- Your First Webpage -->
+<!-- Joseph Gust  10/3/2016  Project 3- Adventure Game v 0.4 -->
 <html lang="en">
-
+ 
 	<head>
 		
 		<meta charset="UTF-8">
@@ -9,20 +9,20 @@
 		Untitled Adventure Game
 		</title>
 <!-- Here is a map of all the areas in my game, each number represents the 'area code' for that area
-
+ 
 					  (8)
 					   |
-				     (4)--(7)--(10)	
+				     (4)==(7)==(10)	
 					   |
 					   |
 	       			(-14)	   |	   (16)
 			         |	   |	    |
-			(-18)--(-15)------(0)------(15)--(18)
+			(-18)==(-15)======(0)======(15)==(18)
 		    		 |	   |	    |
 		  		(-16)	   |   	   (14)
 					   |
 					   |
-				   (-10)--(-7)--(-4)
+				   (-10)==(-7)==(-4)
 					   |
 					  (-8)
 		
@@ -52,6 +52,7 @@
 			var visitNeg15 = false;
 			var visitNeg16 = false;
 			var visitNeg18 = false;
+			var commandText = "";
 			
 			//an array that holds all if the area codes
 			var listAreas = [0,4,7,8,10,14,15,16,18,-4,-7,-8,-10,-14,-15,-16,-18,];
@@ -65,6 +66,7 @@
 				}
 				return false;
 			}
+			
 			
 			//checks for the release of keys, will only do something with input from arrow keys
 			window.addEventListener("keyup", function(event) {
@@ -296,6 +298,38 @@
 				}
 				areaMessage();
 			}
+			
+			
+			//Checks input in the command text field for directional commands
+			function checkInput(){
+				var targetTextArea = document.getElementById("taCommand");
+				commandText = targetTextArea.value;
+				commandText = commandText.trim();
+				commandText = commandText.toLowerCase();
+				targetTextArea.value = "";
+				switch(commandText){
+					case "n":
+					case "north":
+						moveNorth();
+						break;
+					
+					case "s":
+					case "south":
+						moveSouth();
+						break;
+						
+					case "w":
+					case "west":
+						moveWest();
+						break;
+					
+					case "e":
+					case "east":
+						moveEast();
+						break;
+							
+				}
+			}
 		</script>
 		<style>
 		.pinkBold {color: #f887f1; font-weight: bold;}
@@ -314,7 +348,7 @@
 			Adventure Game
 		</h1>
 		<div>
-		<p class="boldText"; id="scoreDisplay">
+		<p class="boldText" id="scoreDisplay">
 		Your Score: 0
 		</p>
 		
@@ -343,8 +377,20 @@
 		</div>
 		<br>
 		
+		
+		<textarea rows="1" cols="25" id="taCommand"  placeholder="Enter Commands Here." onkeyup = "if (event.keyCode == 13)
+                        document.getElementById('goButton').click()"> </textarea>
+	   
+	   <input  type="button"
+			   id = "goButton"
+			   value="Go!"
+			   onclick="checkInput();"/>
+				
+	   <br>
+	   
 		<textarea rows="12" cols="34" id="taMain">Your adventure starts in a desert.  Perhaps you should search the surrounding areas for more habitable lands.
        </textarea>
+	   
 	   <p style="margin-top: 120px">
 			Use the Arrow keys or the directional buttons provided to navigate.
 			
