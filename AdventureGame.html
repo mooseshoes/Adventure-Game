@@ -32,8 +32,10 @@
 		
 			var score = 0; //The player gains 5 points every time they enter an area for the first time
 			var currentArea = 0; //holds the number that represents the area player is currently in
-			var message = ""; //contains the message saying which area the player is in
+			// message contains the message saying which area the player is in
+			var message = "Your adventure starts in a desert.  Perhaps you should search the surrounding areas for more habitable lands.";
 			var bgColor = ""; //contains the code for the background color for the current area
+			var commandText = "";
 			
 			//Booleans to record which areas have been explored
 			var visit4 = false;
@@ -52,21 +54,33 @@
 			var visitNeg15 = false;
 			var visitNeg16 = false;
 			var visitNeg18 = false;
-			var commandText = "";
 			
 			//an array that holds all if the area codes
 			var listAreas = [0,4,7,8,10,14,15,16,18,-4,-7,-8,-10,-14,-15,-16,-18,];
-			
-			//determines if the player can go in the direction requested
-			function isArea(change){
+								
+			//only enables directional buttons that point to a valid area
+			function checkAreas(){
+			document.getElementById("northButton").disabled = true;
+			document.getElementById("eastButton").disabled = true;
+			document.getElementById("southButton").disabled = true;
+			document.getElementById("westButton").disabled = true;
 				for(i=0; i < listAreas.length; i++){
-					if (listAreas[i] == (currentArea + change)){
-						return true;
+					if (listAreas[i] == (currentArea + 1) || currentArea == 0 || currentArea == -7 ){
+						document.getElementById("northButton").disabled = false;
 					}
+					if (listAreas[i] == (currentArea + 3) || currentArea == 0 || currentArea == -15){
+						document.getElementById("eastButton").disabled = false;
+					}
+					if (listAreas[i] == (currentArea - 1) || currentArea == 0 || currentArea == 7){
+						document.getElementById("southButton").disabled = false;
+					}
+					if (listAreas[i] == (currentArea - 3) || currentArea == 0 || currentArea == 15){
+						document.getElementById("westButton").disabled = false;
+					}
+					
 				}
-				return false;
-			}
 			
+			} 
 			
 			//checks for the release of keys, will only do something with input from arrow keys
 			window.addEventListener("keyup", function(event) {
@@ -98,8 +112,8 @@
 				event.preventDefault();
 			}, true);
 					
-			//Sets the message depending on which area you have entered 
-			function areaMessage() {				
+			//Sets the message depending on which area you have entered, and changes the background color to fit the area.  Also updates score and which directions the user can go.
+			function updateDisplay() {				
 				switch(currentArea){
 					case 0:
 						message = "You have entered the desert,  a desolate plain devoid of life save for a few insects and some scarce cacti throughout the land.  The scorching sun makes drudging through the desert a truly miserable experience.";
@@ -257,56 +271,64 @@
 				var targetTextArea = document.getElementById("taMain");
 				targetTextArea.value = message;
 				
+				//call function to disable or enable buttons depending on where you can move
+				checkAreas();
+				
 				//update score
 				document.getElementById("scoreDisplay").innerHTML = "Your Score: " + score;
 			}
 			
-			//directional commands to move to new areas
+			//directional commands to move to new areas.  There's a large jump in value when going to or leaving the starting area to prevent jumping to another area you shouldn't be able to reach from your current location
 			function moveNorth() {
 				if (currentArea == 0 || currentArea == -7){
 					currentArea += 7;
 				}
-				else if (isArea(1)){
+				else if (document.getElementById("northButton").disabled == false){
 					currentArea++;					
 				}
-				areaMessage();				
+				updateDisplay();				
 			}
 			function moveWest() {
 				if (currentArea == 0 || currentArea == 15){
 					currentArea += -15;
 				}
-				else if (isArea(-3)){
+				else if (document.getElementById("westButton").disabled == false){
 					currentArea += -3;
 				}
-				areaMessage();
+				updateDisplay();
 			}
 			function moveEast() {
 				if (currentArea == 0 || currentArea == -15){
 					currentArea += 15;
 				}
-				else if (isArea(3)){
+				else if (document.getElementById("eastButton").disabled == false){
 					currentArea += 3;
 				}
-				areaMessage();
+				updateDisplay();
 			}
 			function moveSouth() {
 				if (currentArea == 0 || currentArea == 7){
 					currentArea += -7;
 				}
-				else if (isArea(-1)){
+				else if (document.getElementById("southButton").disabled == false){
 					currentArea += -1;
 				}
-				areaMessage();
+				updateDisplay();
 			}
 			
 			
 			//Checks input in the command text field for directional commands
 			function checkInput(){
+				//targets command text area and formats the text value of the box to check with commands
 				var targetTextArea = document.getElementById("taCommand");
 				commandText = targetTextArea.value;
 				commandText = commandText.trim();
 				commandText = commandText.toLowerCase();
+				
+				//clears command text area
 				targetTextArea.value = "";
+				
+				//checks for known commands
 				switch(commandText){
 					case "n":
 					case "north":
@@ -327,7 +349,18 @@
 					case "east":
 						moveEast();
 						break;
-							
+					
+					//area displays the contents of message in the main text field, which contains information on the current area
+					case "area":
+						targetTextArea = document.getElementById("taMain");
+						targetTextArea.value = message;
+						break;
+						
+					default:
+						targetTextArea = document.getElementById("taMain");
+						targetTextArea.value = "Invalid command entered.  Valid commands are: n, s, e, w, north, south, east, west, area";
+						
+						
 				}
 			}
 		</script>
@@ -343,11 +376,14 @@
 			}
 		</style>
 	</head>
+	
 	<body class="center">
 		<h1 class="whiteBold">
 			Adventure Game
 		</h1>
 		<div>
+		
+		<!-- Display the user's current score.  Value gets altered whenever score increases. -->
 		<p class="boldText" id="scoreDisplay">
 		Your Score: 0
 		</p>
@@ -355,32 +391,39 @@
 			<!-- Buttons that can be used for navigation -->
 			<input  type="button"
 				value="North"
+				id="northButton"
 				onclick="moveNorth();"
 				style="margin-top: 80px"/>
 			<br>
 			
 			<input  type="button"
 				value="West"
+				id="westButton"
 				onclick="moveWest();" 
 				style="margin-right: 15px"/>
 				
 			<input  type="button"
 				value="East "
+				id="eastButton"
 				onclick="moveEast();" />
 				
 			<br>
 			
 			<input  type="button"
 				value="South"
+				id="southButton"
 				onclick="moveSouth();"/>
 				
 		</div>
 		<br>
 		
-		
-		<textarea rows="1" cols="25" id="taCommand"  placeholder="Enter Commands Here." onkeyup = "if (event.keyCode == 13)
-                        document.getElementById('goButton').click()"> </textarea>
+		<!-- When the textarea is empty and not selected, 'Enter Commands Here' will show up.  I chose to not use a placeholder since some browsers don't support them and they also don't appear until the textarea has been selected once.
+		This textarea also checks for the enter key being pushed, and if it gets pushed the field runs the checkInput() function, same as if the go button was pushed. 
+		taCommand is purely for input, there will be no information being output in this textarea. -->
+		<textarea  rows="1" cols="25" id="taCommand"  onfocus="if (this.value == 'Enter Commands Here') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Enter Commands Here';}" onkeyup = "if (event.keyCode == 13)
+                        document.getElementById('goButton').click()">Enter Commands Here</textarea>
 	   
+	   <!-- This button will call the function that checks the contents of taCommand for a valid command-->
 	   <input  type="button"
 			   id = "goButton"
 			   value="Go!"
@@ -388,15 +431,16 @@
 				
 	   <br>
 	   
+	   <!-- This textarea will be used purely for output, giving the user info like the area they're in or valid commands-->
 		<textarea rows="12" cols="34" id="taMain">Your adventure starts in a desert.  Perhaps you should search the surrounding areas for more habitable lands.
        </textarea>
 	   
 	   <p style="margin-top: 120px">
-			Use the Arrow keys or the directional buttons provided to navigate.
+			Use the Arrow keys, the directional buttons provided, or enter commands into the command box to navigate.
 			
 	   </p>
 	   <p>
-			<a href="mailto:jagmtg8@yahoo.com" class="pinkBold">Email Me about the game!</a>
+			<a href="mailto:jagmtg8@yahoo.com" class="pinkBold">Email me about the game!</a>
 	   </p>
 	</body>
 </html>
