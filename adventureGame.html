@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!-- Joseph Gust  10/3/2016  Project 3- Adventure Game v 0.4 -->
+<html lang="en">
+ 
+	<head>
+		
+		<meta charset="UTF-8">
+		<title>
+		Untitled Adventure Game
+		</title>
+<!-- Here is a map of all the areas in my game, each number represents the 'area code' for that area
+ 
+					  (8)
+					   |
+				     (4)==(7)==(10)	
+					   |
+					   |
+	       			(-14)	   |	   (16)
+			         |	   |	    |
+			(-18)==(-15)======(0)======(15)==(18)
+		    		 |	   |	    |
+		  		(-16)	   |   	   (14)
+					   |
+					   |
+				   (-10)==(-7)==(-4)
+					   |
+					  (-8)
+		
+-->
+		
+		<script type="text/javascript" src="scripts/adventureScript.js"></script>
+		<style>
+		.pinkBold {color: #f887f1; font-weight: bold;}
+		.whiteBold{color: #ffffff;}
+		.center {
+			text-align: center;
+		}
+		.boldText{font-weight: bold;}
+		body {
+				background-color: #f3e19a;
+			}
+		</style>
+	</head>
+	
+	<body class="center">
+		<h1 class="whiteBold">
+			Adventure Game
+		</h1>
+		
+		<!-- Display the user's current score.  Value gets altered whenever score increases. -->
+		<p class="boldText" id="scoreDisplay">
+		Your Score: 0
+		</p>
+			<!-- Buttons that can be used for navigation -->
+			<input  type="button"
+				value="North"
+				id="northButton"
+				onclick="moveNorth();"/>
+			<br>
+			
+			<input  type="button"
+				value="West"
+				id="westButton"
+				onclick="moveWest();" 
+				style="margin-right: 15px"/>
+				
+			<input  type="button"
+				value="East "
+				id="eastButton"
+				onclick="moveEast();" />
+				
+			<br>
+			
+			<input  type="button"
+				value="South"
+				id="southButton"
+				onclick="moveSouth();"/>
+			
+		<br>
+				
+		<!-- When the textarea is empty and not selected, 'Enter Commands Here' will show up.  I chose to not use a placeholder since some browsers don't support them and they also don't appear until the textarea has been selected once.
+		This textarea also checks for the enter key being pushed, and if it gets pushed the field runs the checkInput() function, same as if the go button was pushed. 
+		taCommand is purely for input, there will be no information being output in this textarea. -->
+		<textarea  rows="1" cols="25" id="taCommand"  onfocus="if (this.value == 'Enter Commands Here') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Enter Commands Here';}" onkeyup = "if (event.keyCode == 13)
+                        document.getElementById('goButton').click()">Enter Commands Here</textarea>
+	   
+	   <!-- This button will call the function that checks the contents of taCommand for a valid command-->
+	   <input  type="button"
+			   id = "goButton"
+			   value="Go!"
+			   onclick="checkInput();"/>
+				
+	   <br>
+	   
+	   <!-- This textarea will be used purely for output, giving the user info like the area they're in or valid commands-->
+		<textarea rows="8" cols="44" id="taMain">Your adventure starts in a desert.  Perhaps you should search the surrounding areas for more habitable lands.
+       </textarea>
+	   
+	   <p style="margin-top: 20px">
+			Use the Arrow keys, the directional buttons provided, or enter commands into the command box to navigate.  Enter 'help' for a list of commands
+			
+	   </p>
+	   <img src="images/map.png" alt="Map" style="width:270px;height:240px;">
+		<br>
+	   <p>
+			<a href="mailto:jagmtg8@yahoo.com" class="pinkBold">Email me about the game!</a>
+	   </p>
+	</body>
+</html>
