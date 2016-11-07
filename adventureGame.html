@@ -10,24 +10,24 @@
 		</title>
 <!-- Here is a map of all the areas in my game, each number represents the 'area code' for that area
  
-					  (8)
+					  (3)
 					   |
-				     (4)==(7)==(10)	
-					   |
-					   |
-	       			(-14)	   |	   (16)
-			         |	   |	    |
-			(-18)==(-15)======(0)======(15)==(18)
-		    		 |	   |	    |
-		  		(-16)	   |   	   (14)
+				     (2)==(1)==(4)	
 					   |
 					   |
-				   (-10)==(-7)==(-4)
+	       			(16)       |     (6)
+			         |	   |	   |
+			(15)==(13)======(0)======(5)==(7)
+		    		|	   |	   |
+			      (14)	   |   	  (8)
 					   |
-					  (-8)
+					   |
+				    (12)==(9)==(10)
+					   |
+					  (11)
 		
 -->
-		
+		<script type="text/javascript" src="scripts/locations.js"></script>
 		<script type="text/javascript" src="scripts/adventureScript.js"></script>
 		<style>
 		.pinkBold {color: #f887f1; font-weight: bold;}
@@ -39,6 +39,12 @@
 		body {
 				background-color: #f3e19a;
 			}
+		
+		.movableImage{
+			position: absolute;
+			top: 542px;
+			left: 593px;
+		}
 		</style>
 	</head>
 	
@@ -100,7 +106,11 @@
 			Use the Arrow keys, the directional buttons provided, or enter commands into the command box to navigate.  Enter 'help' for a list of commands
 			
 	   </p>
+	   
 	   <img src="images/map.png" alt="Map" style="width:270px;height:240px;">
+	   <div id="arrowImg" class="movableImage">
+	   <img src="images/PlayerIcon.png" alt="arrow" style="width:13px;height:16px;">
+	   </div>
 		<br>
 	   <p>
 			<a href="mailto:jagmtg8@yahoo.com" class="pinkBold">Email me about the game!</a>
