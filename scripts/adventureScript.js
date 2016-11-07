@@ -83,7 +83,7 @@
 				var targetTextArea = document.getElementById("taMain");
 				targetTextArea.value = currentLocation.description;
 				
-				positionArrow();
+				positionIcon();
 				
 				//call function to disable or enable buttons depending on where you can move
 				checkAreas();
@@ -92,9 +92,9 @@
 				document.getElementById("scoreDisplay").innerHTML = "Your Score: " + score;
 			}
 			
-			//moves the green arrow as the player moves.
-			function positionArrow(){
-				imgHolder = document.getElementById("arrowImg");
+			//moves the stick figure as the player moves.
+			function positionIcon(){
+				imgHolder = document.getElementById("iconImg");
 				imgHolder.style.top = currentLocation.areaY.toString() + "px";
 				imgHolder.style.left = currentLocation.areaX.toString() + "px";
 			}
