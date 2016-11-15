@@ -1,12 +1,22 @@
 			var score = 0; //The player gains 5 points every time they enter an area for the first time
 			var commandText = ""; 
-			var commandList = "north, south, east, west, area, help, inventory, find, pick up"; //list of viable commands, shown to user when they call for help
+			var commandList = "north, south, east, west, area, help, inventory, find, take"; //list of viable commands, shown to user when they call for help
 			var badDirection = ""; //Holds messages to inform the user when they can't go a direction
 			var inventory = []; //Stores all items in the inventory
 			var invList = ""; //string that lists items in the inventory
 			var currentLocation = gameLocation0; //represents the player's current location
-			var imgHolder;
-						
+				
+			window.onload = function() {
+				var y = currentLocation.areaY;
+				var x = currentLocation.areaX;
+				var mCanvas = document.getElementById("mapCanvas");
+				var ctx = mCanvas.getContext("2d");
+				var img = document.getElementById("mapImg");
+				ctx.drawImage(img, 0, 0, 270, 240);
+				var img = document.getElementById("playerIcon");
+				ctx.drawImage(img, x, y, (12), (15));
+			}
+				
 			//only enables directional buttons that point to a valid area
 			function checkAreas(){
 						if (currentLocation.northLink == null){
@@ -94,9 +104,14 @@
 			
 			//moves the stick figure as the player moves.
 			function positionIcon(){
-				imgHolder = document.getElementById("iconImg");
-				imgHolder.style.top = currentLocation.areaY.toString() + "px";
-				imgHolder.style.left = currentLocation.areaX.toString() + "px";
+				var y = currentLocation.areaY;
+				var x = currentLocation.areaX;
+				var mCanvas = document.getElementById("mapCanvas");
+				var ctx = mCanvas.getContext("2d");
+				var img = document.getElementById("mapImg");
+				ctx.drawImage(img, 0, 0, 270, 240);
+				var img = document.getElementById("playerIcon");
+				ctx.drawImage(img, x, y, (12), (15));				
 			}
 			//directional commands to move to new areas, and inform the user when they can't go in the specified direction.
 			function moveNorth() {
@@ -228,9 +243,9 @@
 						}
 						break;
 					
-					//pick up will add any items in the area to the inventory.
-					case "p":
-					case "pick up":
+					//take will add any items in the area to the inventory.
+					case "t":
+					case "take":
 						targetTextArea = document.getElementById("taMain");
 						if(currentLocation.item != null){
 							targetTextArea.value = "You have picked up " + currentLocation.item.name + ".";

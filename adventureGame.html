@@ -40,11 +40,6 @@
 				background-color: #f3e19a;
 			}
 		
-		.movableImage{
-			position: absolute;
-			top: 542px;
-			left: 593px;
-		}
 		</style>
 	</head>
 	
@@ -106,11 +101,11 @@
 			Use the Arrow keys, the directional buttons provided, or enter commands into the command box to navigate.  Enter 'help' for a list of commands
 			
 	   </p>
-	   
-	   <img src="images/map.png" alt="Map" style="width:270px;height:240px;">
-	   <div id="iconImg" class="movableImage">
-	   <img src="images/PlayerIcon.png" alt="playerIcon" style="width:13px;height:16px;">
-	   </div>
+	   <!-- This canvas will be used to draw the map and the playerIcon that moves around the map. -->
+	   <canvas id="mapCanvas" width="270" height="240" style="border:1px solid green;">Canvas</canvas> 
+	   <img id="mapImg" src="images/map.png" alt="Map" style="display: none;">
+	   <img id="playerIcon" src="images/PlayerIcon.png" alt="playerIcon" style="display: none;">
+
 		<br>
 	   <p>
 			<a href="mailto:jagmtg8@yahoo.com" class="pinkBold">Email me about the game!</a>
