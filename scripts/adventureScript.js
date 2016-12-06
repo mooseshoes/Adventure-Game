@@ -6,25 +6,29 @@
 			var invList = ""; //string that lists items in the inventory
 			var currentLocation = gameLocation0; //represents the player's current location
 
-			var health = 20;
-			var damage = 4;
-			var invisible = false;
-			var dmgReduction = 0;
-			var shieldReduction = 0;
-			var stun = 0;
-				
-			var gateLocked = true;
+			var maxHealth = 20; //max amount of health the player can have
+			var health = maxHealth; //player's current health value
+			var damage = 4; //player's current damage value
+			var dmgReduction = 0; //reduces incoming damage to the player
+			var shieldReduction = 0; //reduces incoming damage to the player, using shield (only lasts for 1 turn)
+			var stun = 0; // # of turns the enemy will be stunned for			
+			
+			var invisible = false; //invisiblity prevents player from taking damage
+			var gateLocked = true; //if gateLocked is false, the player can enter the gate(in area 8) and win the game.
+			var wasAttacked = false;//Keeps track of if the user was attacked that turn, so the game knows whether or not to apply a stun if the user blocked with their shield
+			var hasItem = false; //player has the item specified						
+			var usedTurn = false; //usedTurn determines whether you should get attacked by an enemy or not.
 			var gameLost = false;
 			var gameWon = false;
-			var hasItem = false;
-			//usedTurn determines whether you should get attacked by an enemy or not.
-			var usedTurn = false;
 			
+			//create an enemy that's already dead, so it's safe to ask if there's a living enemy 
 			var noEnemy = new enemy("nothing",null);
 			noEnemy.alive = false;
 			
+			//currentEnemy will represent any enemy that'a attacking the player, it holds noEnemy when there's not enemy attacking that's alive.
 			var currentEnemy = noEnemy;
 			
+			//when the game starts, set up the visuals for the starting area and give a brief description of what's happening.
 			window.onload = function() {
 				updateDisplay();
 				checkAreas();
@@ -33,11 +37,12 @@
 			}
 				
 			//only enables directional buttons that point to a valid area
-			function checkAreas(){
+			function checkAreas(){						
 						if (currentLocation.northLink === null){							
 							document.getElementById("northButton").disabled = true;
-						}
+						}						
 						else{
+							//if You're trying to go to the final boss location, you need to explore every other location first.
 							if(currentLocation.id === 13 && score < 75){
 								document.getElementById("northButton").disabled = true;
 							}
@@ -146,8 +151,8 @@
 				var eCanvas = document.getElementById("enemyCanvas");
 				var enemyPic = document.getElementById("enemyImg");
 				var ctx = eCanvas.getContext("2d");
-				var img = null;				
-				enemyPic.style.display='none';
+				var img = null;
+				//display image and stats if enemy is alive
 				if (currentEnemy.alive){
 					enemyHP.innerHTML = "Enemy Health: " + currentEnemy.hp;
 					enemyDmg.innerHTML = "Enemy Damage: " + currentEnemy.damage;
@@ -161,15 +166,18 @@
 					if (currentEnemy.name === "balrog"){
 						img = document.getElementById("balrogImage");
 					}
+					if (currentEnemy.name === "orc"){
+						img = document.getElementById("orcImage");
+					}
 					enemyPic = img;
 					ctx.drawImage(enemyPic, 0, 0, 120, 100);
 				}
 				else{
+					//remove enemy hp and dmg counters when there is no living enemy
 					enemyHP.innerHTML = "";
-					enemyDmg.innerHTML = "";		
+					enemyDmg.innerHTML = "";
+					//clear canvas when there's no living enemy
 					ctx.clearRect(0, 0, eCanvas.width, eCanvas.height);
-
-
 				}			
 			}
 			
@@ -291,6 +299,7 @@
 				}
 			}
 			
+			//when the game is over, display text telling the user that they won or lost.
 			function gameOver(){
 				targetTextArea = document.getElementById("taMain");
 				if (gameLost){
@@ -479,6 +488,7 @@
 									usedTurn = true;
 									inventory[i].func();
 									targetTextArea.value = "You use the bandage to restore 1/2 of your max health.";
+									//Remove from inventory when used
 									inventory.splice(i,1);
 									}
 								break;
@@ -608,14 +618,13 @@
 				}
 				if (usedTurn){
 					if(currentEnemy.alive === true && invisible === false && stun < 1){
+						wasAttacked = true;
 						realDmg = currentEnemy.damage - (dmgReduction + shieldReduction);
 						health += -realDmg;
 						targetTextArea = document.getElementById("taMain");
 						targetTextArea.value += currentEnemy.name + " attacks you for " + realDmg + ".";
-						if(shieldReduction > 0){
-							stun += 2;
-						}
 					}
+					//remove a stack of stun
 					if(stun > 0){
 						stun += -1;
 					}
@@ -625,7 +634,12 @@
 						gameOver();
 					}					
 						paintEnemy();
+					if(shieldReduction > 0 && wasAttacked){
+							stun += 1;
+						}
 					shieldReduction = 0;
+					wasAttacked = false;
 				}
 				usedTurn = false;
 			}
+			

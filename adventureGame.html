@@ -28,16 +28,19 @@
 		<h1 class="whCenter">
 			Adventure Game
 		</h1>
+		<!-- Images to be used for enemies the player encounters.-->
 		<img id="wolfImage" src="images/wolf.png" alt="playerIcon" style="display: none;">
 		<img id="goblinImage" src="images/goblin.png" alt="playerIcon" style="display: none;">
+		<img id="orcImage" src="images/orc.png" alt="playerIcon" style="display: none;">
 		<img id="balrogImage" src="images/balrog.png" alt="playerIcon" style="display: none;">
 		
+		<!-- Display the user's health, enemy's health, and the score.-->
 		<div style="font-weight: bold; float: left" id="healthDisplay">Your Health: 20</div>
 		<div style="font-weight: bold; float: Left; margin-left:36px" id="enemyHPDisplay"></div>
         <div style="font-weight: bold;margin: 0 auto; width: 105px;" id="scoreDisplay" >Your Score: 0</div>
 
 		
-		<!-- Display the user's damage.-->
+		<!-- Display the user's damage and the enemy's damage.-->
 		<b id="damageDisplay">Your Damage: 4</b>	
 		<b style="margin-left: 30px" id="enemyDmgDisplay"></b>
 		<br>
@@ -98,7 +101,7 @@
 	   <br>
 	   
 	   <!-- This textarea will be used purely for output, giving the user info like the area they're in or valid commands-->
-		<textarea rows="8" cols="44" id="taMain"></textarea>
+		<textarea rows="9" cols="44" id="taMain"></textarea>
 	   
 	   <p style="margin-top: 20px">
 			Use the Arrow keys, the directional buttons provided, or enter commands into the command box to navigate.  Enter 'help' for a list of commands
